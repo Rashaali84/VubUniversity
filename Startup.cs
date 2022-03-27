@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VubUniversity.Data;
-
+using Microsoft.AspNetCore.Diagnostics;
 namespace VubUniversity
 {
     public class Startup
@@ -32,6 +32,13 @@ namespace VubUniversity
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //register the new db context for dependency injection 
+            services.AddDbContext<SchoolContext>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+           // services.AddDatabaseDeveloperPageExceptionFilter();
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
