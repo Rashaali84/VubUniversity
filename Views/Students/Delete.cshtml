@@ -32,6 +32,10 @@
     </dl>
     
     <form asp-action="Delete">
+        <h2>Delete</h2>
+        <p class="text-danger">@ViewData["ErrorMessage"]</p>
+        <h3>Are you sure you want to delete this?</h3>
+
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
