@@ -30,15 +30,22 @@ namespace VubUniversity
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddIdentity<IdentityUser, IdentityRole>(
+
+                options => { options.SignIn.RequireConfirmedAccount = true;
+                    options.Lockout.AllowedForNewUsers = true;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+                } )
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+     
             //register the new db context for dependency injection 
             services.AddDbContext<SchoolContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-           // services.AddDatabaseDeveloperPageExceptionFilter();
-            
+        
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
