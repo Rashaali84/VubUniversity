@@ -33,18 +33,21 @@ namespace VubUniversity
 
             services.AddIdentity<IdentityUser, IdentityRole>(
 
-                options => { options.SignIn.RequireConfirmedAccount = true;
+                options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
                     options.Lockout.AllowedForNewUsers = true;
                     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
                     options.Lockout.MaxFailedAccessAttempts = 3;
-                } )
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-     
+        
+
             //register the new db context for dependency injection 
             services.AddDbContext<SchoolContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-        
+      
 
             services.AddControllersWithViews();
             services.AddRazorPages();
