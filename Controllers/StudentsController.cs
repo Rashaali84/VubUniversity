@@ -85,7 +85,8 @@ namespace VubUniversity.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Create([Bind("LastName,FirstMidName,EnrollmentDate")] Student student)
         {
             try
@@ -110,17 +111,27 @@ namespace VubUniversity.Controllers
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+                var student = await _context.Students.FindAsync(id);
+                if (student == null)
+                {
+                    return NotFound();
+                }
+                return View(student);
+            }
+            catch(NullReferenceException nullex)
             {
+                Console.WriteLine(nullex.Message);
                 return NotFound();
             }
-            return View(student);
+            
+            
         }
 
         // POST: Students/Edit/5
